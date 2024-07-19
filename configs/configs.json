@@ -1,0 +1,9 @@
+{
+    "data_source": "host=localhost user=postgres password=1234 dbname=sell_products port=5432 sslmode=disable TimeZone=Asia/Shanghai",
+    "port": "8080",
+    "address_redis": "localhost:6379",
+    "password_redis": "",
+    "databaseredis_index": 0,
+    "secret_key":"trueiwmdslvkmp9876545689vfdv f@3$%",
+    "expire_access":"168h"
+}
