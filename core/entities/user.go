@@ -30,5 +30,6 @@ type LogoutRequest struct {
 }
 type UserJwtClaim struct {
 	*jwt.StandardClaims
-	UserName string `json:"user_name"`
+	CreatorID int64  `json:"creator_id"`
+	UserName  string `json:"user_name"`
 }

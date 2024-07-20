@@ -31,7 +31,7 @@ func NewJwtUseCasee(config *configs.Configs, user domain.RepositoryUser) *JwtUse
 	}
 }
 
-func createToken(username string) (string, error) {
+func createToken(creatorID int64, username string) (string, error) {
 	expireDuration, err := time.ParseDuration(configs.Get().ExpireAccess)
 	if err != nil {
 		return "", err
@@ -40,7 +40,8 @@ func createToken(username string) (string, error) {
 	expireTime := time.Now().Add(expireDuration).Unix()
 
 	claims := &entities.UserJwtClaim{
-		UserName: username,
+		CreatorID: creatorID,
+		UserName:  username,
 		StandardClaims: &jwt.StandardClaims{
 			ExpiresAt: expireTime,
 		},
@@ -84,7 +85,7 @@ func (u *JwtUseCase) Login(ctx context.Context, req *entities.LoginRequest) (*en
 		return nil, errors.NewCustomHttpError(http.StatusConflict, errors.NOT_EXIST_CODE, errors.NOT_EXIST_MESS)
 	}
 	//check password
-	token, err := createToken(req.UserName)
+	token, err := createToken(user.ID, req.UserName)
 	if err != nil {
 		return nil, errors.NewCustomHttpError(http.StatusProcessing, errors.SYSTEM_ERROR_CODE, err.Error())
 	}

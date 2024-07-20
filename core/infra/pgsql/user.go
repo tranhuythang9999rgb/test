@@ -13,7 +13,7 @@ type CollectionUser struct {
 	collection *gorm.DB
 }
 
-func NewCollectionOrder(cf *configs.Configs, user *infra.PostGresql) domain.RepositoryUser {
+func NewCollectionUser(cf *configs.Configs, user *infra.PostGresql) domain.RepositoryUser {
 	return &CollectionUser{
 		collection: user.CreateCollection(),
 	}

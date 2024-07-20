@@ -22,6 +22,8 @@ func loadUseCase() []fx.Option {
 	return []fx.Option{
 		fx.Provide(usecase.NewJwtUseCasee),
 		fx.Provide(usecase.NewUserUseCase),
+		fx.Provide(usecase.NewOrderUseCase),
+		fx.Provide(usecase.NewProductUseCase),
 	}
 }
 
@@ -31,11 +33,15 @@ func loadEngine() []fx.Option {
 		fx.Provide(controllers.NewJwtController),
 		fx.Provide(controllers.NewUserController),
 		fx.Provide(middleware.NewMiddleware),
+		fx.Provide(controllers.NewOrderController),
 	}
 }
 func loadAdapter() []fx.Option {
 	return []fx.Option{
 		fx.Provide(infra.NewpostgreDb),
+		fx.Provide(pgsql.NewCollectionUser),
 		fx.Provide(pgsql.NewCollectionOrder),
+		fx.Provide(pgsql.NewCollectionProduct),
+		fx.Provide(pgsql.NewCollectionTransaction),
 	}
 }

@@ -18,10 +18,14 @@ CREATE Table files(
 
 CREATE Table products(
     id BIGINT PRIMARY KEY,
+    creator_id BIGINT,
     name VARCHAR(255),
-    description VARCHAR(1024),
-    price DECIMAL(100),
+    price DECIMAL(10, 2),
     quantity INTEGER,
+    description VARCHAR(1024),
+    discount_percent DECIMAL(5, 2),
+    status_sell BOOLEAN DEFAULT true,
+    is_active BOOLEAN,
     create_time INTEGER,
     update_time INTEGER
 )
@@ -40,4 +44,15 @@ CREATE Table permission(
     title VARCHAR(128),
     slug VARCHAR(128),
     active int DEFAULT 1,
-)
+);
+
+CREATE Table orders(
+    id BIGINT PRIMARY KEY,
+    product_id BIGINT,
+    creator_id BIGINT,
+    quantity INT,
+    price DECIMAL(10, 2),
+    status BOOLEAN,
+    create_time INTEGER,
+    update_time INTEGER
+);

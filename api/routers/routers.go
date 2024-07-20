@@ -20,6 +20,7 @@ func NewApiRouter(
 	user *controllers.UserController,
 	jwt *controllers.JwtController,
 	middleware *middleware.MiddleWare,
+	order *controllers.OrderController,
 ) *ApiRouter {
 
 	r := fiber.New()
@@ -39,6 +40,7 @@ func NewApiRouter(
 		{
 			userMiddleware.Get("/list", jwt.ListSession)
 			userMiddleware.Post("/logout", jwt.Logout)
+			userMiddleware.Post("/buy/order", order.RegisterOrder)
 		}
 
 	}
