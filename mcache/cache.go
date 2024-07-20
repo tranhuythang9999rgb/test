@@ -33,12 +33,6 @@ func Init(config *configs.Configs) {
 	}
 }
 
-func SetConfig(config *configs.Configs) {
-	lock.Lock()
-	defer lock.Unlock()
-	cfg = config
-}
-
 func GetRDB() *redis.Client {
 	lock.Lock()
 	defer lock.Unlock()
