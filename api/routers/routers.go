@@ -42,6 +42,7 @@ func NewApiRouter(
 		}
 
 	}
+
 	//http://localhost:8080/dowload/cell.png
 	r.Get("/dowload/:name", func(c *fiber.Ctx) error {
 		name := c.Params("name")

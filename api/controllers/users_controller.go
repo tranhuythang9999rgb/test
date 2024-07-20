@@ -1,10 +1,11 @@
 package controllers
 
 import (
-	"ap_sell_products/api/resources"
+	"ap_sell_products/common/utils"
 	"ap_sell_products/core/entities"
 	"ap_sell_products/core/usecase"
-	"net/http"
+	"fmt"
+	"path/filepath"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -21,14 +22,28 @@ func NewUserController(user *usecase.UserUseCase) *UserController {
 func (u *UserController) AddUser(ctx *fiber.Ctx) error {
 	var req entities.User
 	if err := ctx.BodyParser(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, err.Error())
-		return err
+		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
 	}
-	err := u.user.AddUser(ctx.Context(), &req)
+
+	// Xử lý upload file ảnh (nếu có)
+	file, err := ctx.FormFile("avatar")
+	if err == nil {
+		// Nếu có file được upload
+		ext := filepath.Ext(file.Filename)
+		newFileName := fmt.Sprintln(utils.GenerateUniqueKey()) + ext
+		uploadPath := filepath.Join("public", newFileName)
+
+		if err := ctx.SaveFile(file, uploadPath); err != nil {
+			return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to save file"})
+		}
+
+		req.Avatar = fmt.Sprintf("http://localhost:8080/download/%s", newFileName)
+	}
+
+	err = u.user.AddUser(ctx.Context(), &req)
 	if err != nil {
-		ctx.JSON(err)
-		return nil
+		return ctx.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
-	resources.ResponseSuccess(ctx)
-	return nil
+
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"message": "User added successfully", "avatar": req.Avatar})
 }
