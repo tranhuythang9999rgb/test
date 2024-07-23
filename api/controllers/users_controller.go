@@ -25,7 +25,6 @@ func (u *UserController) AddUser(ctx *fiber.Ctx) error {
 		return ctx.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	// Xử lý upload file ảnh (nếu có)
 	file, err := ctx.FormFile("avatar")
 	if err == nil {
 		// Nếu có file được upload

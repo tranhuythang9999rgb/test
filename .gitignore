@@ -1,2 +1,6 @@
 **/public
 ./.gitignore
+**/.gitignore
+**/go.mod
+**/go.sum
+/vendor/
